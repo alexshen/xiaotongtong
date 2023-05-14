@@ -9,12 +9,12 @@ Page({
         url: ""
     },
     onLoad(options) {
-        this.data.url = decodeURIComponent(options.url);
-        this.setData(this.data);
+        this.setData({
+            url: decodeURIComponent(options.url)
+        });
     },
     onQRCodeLoaded() {
-        this.data.loading = false;
-        this.setData(this.data);
+        this.setData({ loading: false });
         const timerId = this.timerId = setInterval(() => {
             console.log("checking login state");
             app.request({

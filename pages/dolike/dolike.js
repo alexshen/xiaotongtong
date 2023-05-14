@@ -140,20 +140,24 @@ Page({
                 method: 'POST',
                 onSuccess(res) {
                     step.numPostsLiked = res.count;
+                    updateStep();
+                    nextStep(onComplete);
                 },
                 onFailure() {
                     step.error = true;
-                },
-                onComplete() {
                     updateStep();
-                    doLikeStep(steps, ci, si + 1, onComplete);
-                }
+                    nextStep(onComplete);
+                },
             });
 
             function updateStep() {
                 self.setData({
                     [`likeProgress[${ci}].steps[${si}]`]: step
                 });
+            }
+
+            function nextStep(onComplete) {
+                doLikeStep(steps, ci, si + 1, onComplete);
             }
         }
     },

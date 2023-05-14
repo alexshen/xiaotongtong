@@ -14,8 +14,17 @@ Page({
         });
     },
     onQRCodeLoaded() {
-        this.setData({ loading: false });
-        const timerId = this.timerId = setInterval(() => {
+        this.setData({
+            loading: false
+        });
+        let isChecking;
+        const timerId = this.timerId = setInterval(checkLoggedIn, 1000);
+
+        function checkLoggedIn() {
+            if (isChecking) {
+                return;
+            }
+            isChecking = true;
             console.log("checking login state");
             app.request({
                 path: "/isloggedin",
@@ -30,9 +39,12 @@ Page({
                 onFailure(err) {
                     util.showErrorDialog(err);
                     clearInterval(timerId);
+                },
+                onComplete() {
+                    isChecking = false;
                 }
-            })
-        }, 1000);
+            });
+        }
     },
     onUnload() {
         if (this.timerId) {

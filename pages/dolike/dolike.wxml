@@ -1,0 +1,38 @@
+<!--pages/dolike/dolike.wxml-->
+<mp-toptips id="errortip" show="{{_showErrorTip}}" msg="{{_errorTipMsg}}"/>
+<mp-form-page wx:if="{{showCommunities}}" title="选择需要点赞的社区">
+    <mp-cells>
+        <mp-loading show="{{gettingCommunities}}" type="circle" />
+        <block wx:if="{{!gettingCommunities}}">
+            <mp-checkbox-group multi="{{true}}" bindchange="onCommunityChanged">
+                <mp-checkbox wx:for="{{communities}}" wx:key="value" label="{{item.name}}" value="{{item.name}}" checked="{{item.checked}}" />
+            </mp-checkbox-group>
+        </block>
+    </mp-cells>
+    <view slot="button">
+        <button wx:if="{{!gettingCommunities}}" class="weui-btn" type="primary" bindtap="doLike">点赞</button>
+    </view>
+</mp-form-page>
+<mp-form-page wx:if="{{!showCommunities}}" title="点赞中请稍后">
+    <mp-cells>
+        <view class="like-container" wx:for="{{likeProgress}}" wx:key="name">
+            <view>
+                <icon wx:if="{{item.done && !item.error}}" class="like-item" type="success" />
+                <icon wx:if="{{item.done && item.error}}" class="like-item" type="warn" />
+                <image wx:if="{{!item.done}}" src="/images/loading.gif" class="like-item like-item-loading" mode="aspectFit"/>
+                <image src="/images/community.png" class="like-item like-item-loading" mode="aspectFit"/>
+                <label class="like-item">{{item.name}}</label>
+            </view>
+            <view class="like-step" wx:for="{{item.steps}}" wx:key="name">
+                <image src="/images/{{item.kind}}.png" class="like-item like-item-loading" mode="aspectFit"/>
+                <label class="like-item">{{item.name}}...</label>
+                <image wx:if="{{!item.error && item.numPostsLiked < 0}}" src="/images/loading.gif" class="like-item like-item-loading" mode="aspectFit" />
+                <label wx:if="{{!item.error && item.numPostsLiked >= 0}}"> {{item.numPostsLiked}} 条</label>
+                <icon wx:if="{{item.error}}" class="like-item" type="warn"/>
+            </view>
+        </view>
+    </mp-cells>
+    <view slot="button">
+        <button wx:if="{{likingFinished}}" class="weui-btn" type="primary" bindtap="showCommunities">返回</button>
+    </view>
+</mp-form-page>

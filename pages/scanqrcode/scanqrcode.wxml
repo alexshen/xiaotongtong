@@ -1,0 +1,7 @@
+<!--pages/scanqrcode/scanqrcode.wxml-->
+<view class="container">
+    <mp-toptips id="errortip" show="{{_showErrorTip}}" msg="{{_errorTipMsg}}"/>
+    <label>长按识别二维码登入社区通</label>
+    <mp-loading id="errortip" show="{{loading}}" type="circle"/>
+    <image hidden="{{loading}}" src="{{url}}" show-menu-by-longpress="true" mode="aspectFit" bindload="onQRCodeLoaded"/>
+</view>

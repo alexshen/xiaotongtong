@@ -1,0 +1,17 @@
+/* pages/dolike/dolike.wxss */
+.like-container {
+    padding: 10rpx 48rpx
+}
+
+.like-item {
+    margin-left: 10rpx;
+}
+
+.like-item-loading {
+    width:42rpx;
+    height:42rpx;
+}
+
+.like-step {
+    margin-left: 50rpx;
+}

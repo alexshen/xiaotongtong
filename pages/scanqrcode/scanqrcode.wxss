@@ -1,0 +1,6 @@
+/* pages/scanqrcode/scanqrcode.wxss */
+
+.loading {
+    width: 96px;
+    height: 96px;
+}

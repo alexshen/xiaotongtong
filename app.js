@@ -20,9 +20,7 @@ App({
                     util.showErrorDialog({
                         content: '请重新登入',
                         complete() {
-                            if (getCurrentPages().length > 0) {
-                                wx.navigateBack(getCurrentPages().length - 1)
-                            }
+                            wx.navigateBack({delta: getCurrentPages().length - 1})
                         }
                     });
                 } else if (res.statusCode === 200) {

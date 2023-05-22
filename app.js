@@ -8,7 +8,7 @@ App({
     },
     config: {
       //server: "http://localhost:8080",
-      server: "http://52.194.255.26:8080",
+      server: "https://alexshen1987.top:8080",
     },
     request({ path, method = "GET", data, onSuccess, onFailure, onComplete, showErrorTip=true }) {
         this.client.request({

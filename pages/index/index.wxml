@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class="container">
     <mp-toptips id="errortip" show="{{_showErrorTip}}" msg="{{_errorTipMsg}}"/>
-    <image src="/images/app_icon.jpg" mode="aspectFit"/>
+    <image src="/images/app_icon.png" mode="aspectFit"/>
     <button disabled="{{startingQRLogin}}" type="primary" bindtap="startQRLogin">开始登入社区通</button>
 </view>

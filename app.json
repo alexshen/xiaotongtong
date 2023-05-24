@@ -2,6 +2,7 @@
     "pages": [
         "pages/index/index",
         "pages/scanqrcode/scanqrcode",
+        "pages/community/community",
         "pages/dolike/dolike"
     ],
     "window": {

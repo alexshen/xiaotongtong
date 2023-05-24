@@ -31,7 +31,7 @@ Page({
                 onSuccess(res) {
                     if (res.loggedin) {
                         wx.redirectTo({
-                            url: '/pages/dolike/dolike',
+                            url: '/pages/community/community',
                         })
                         clearInterval(timerId);
                     }

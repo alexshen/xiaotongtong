@@ -1,6 +1,9 @@
 {
     "usingComponents": {
+        "mp-checkbox-group": "/miniprogram_npm/weui-miniprogram/checkbox-group/checkbox-group",
+        "mp-checkbox": "/miniprogram_npm/weui-miniprogram/checkbox/checkbox",
         "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
+        "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading",
         "mp-form-page": "/miniprogram_npm/weui-miniprogram/form-page/form-page",
         "mp-toptips": "/miniprogram_npm/weui-miniprogram/toptips/toptips"
     }

@@ -11,45 +11,19 @@ const stepNames = {
 
 Page({
     data: {
-        showCommunities: true,
-        gettingCommunities: false,
         likingFinished: false,
-        // [{name, checked}]
-        communities: [],
         // [{name, done, error, steps: [{ kind, name, numPostsLiked, error }]}]
         likeProgress: [],
     },
-    currentCommunity: -1,
-    onLoad() {
-        this.getCommunities();
-    },
-    getCommunities() {
-        this.setData({
-            gettingCommunities: true
-        });
-        app.request({
-            path: '/getcommunities',
-            onSuccess: (res) => {
-                const communities = res.names.map((e, i) => {
-                    return {
-                        value: i,
-                        name: e,
-                        checked: true
-                    };
-                })
-                this.setData({
-                    gettingCommunities: false,
-                    communities
-                });
-                this.currentCommunity = res.current;
-                console.log("current community: " + this.data.communities[this.currentCommunity].name);
-            },
-        });
+    onLoad(options) {
+        const data = JSON.parse(options.data);
+        this.communities = data.communities;
+        this.currentCommunity = data.communities.indexOf(data.current);
+        this.doLike();
     },
     doLike() {
         const self = this;
         this.setData({
-            showCommunities: false,
             likeProgress: [],
             likingFinished: false
         });
@@ -63,11 +37,11 @@ Page({
             app.request({
                 path: "/setcurrentcommunity",
                 data: {
-                    current: i
+                    name: self.communities[i]
                 },
                 method: "POST",
                 onSuccess() {
-                    console.log("set current community: " + self.data.communities[i].name);
+                    console.log("set current community: " + self.communities[i]);
                     self.currentCommunity = i;
                     onSuccess();
                 },
@@ -77,53 +51,49 @@ Page({
 
         // like communities[i:]
         function likeCommunity(i, onSuccess) {
-            if (i >= self.data.communities.length) {
+            if (i >= self.communities.length) {
                 return onSuccess();
             }
 
-            if (self.data.communities[i].checked) {
-                // initialize the state for the community
-                const state = {
-                    name: self.data.communities[i].name
-                };
-                const stateIndex = self.data.likeProgress.length;
-                self.setData({
-                    [`likeProgress[${stateIndex}]`]: state
-                });
-                if (i !== self.currentCommunity) {
-                    setCurrentCommunity(i, likePosts, () => {
-                        state.done = true;
-                        state.error = true;
-                        self.setData({
-                            [`likeProgress[${stateIndex}]`]: state
-                        });
-                        likeCommunity(i + 1, onSuccess);
-                    });
-                } else {
-                    likePosts();
-                }
-
-                function likePosts() {
-                    // initialize steps
-                    state.steps = Object.entries(stepNames).map(([kind, name]) => {
-                        return {
-                            kind,
-                            name,
-                            numPostsLiked: -1
-                        };
-                    });
+            // initialize the state for the community
+            const state = {
+                name: self.communities[i]
+            };
+            const stateIndex = self.data.likeProgress.length;
+            self.setData({
+                [`likeProgress[${stateIndex}]`]: state
+            });
+            if (i !== self.currentCommunity) {
+                setCurrentCommunity(i, likePosts, () => {
+                    state.done = true;
+                    state.error = true;
                     self.setData({
                         [`likeProgress[${stateIndex}]`]: state
                     });
-                    doLikeStep(state.steps, stateIndex, 0, () => {
-                        self.setData({
-                            [`likeProgress[${stateIndex}].done`]: true
-                        });
-                        likeCommunity(i + 1, onSuccess);
-                    });
-                }
+                    likeCommunity(i + 1, onSuccess);
+                });
             } else {
-                likeCommunity(i + 1, onSuccess);
+                likePosts();
+            }
+
+            function likePosts() {
+                // initialize steps
+                state.steps = Object.entries(stepNames).map(([kind, name]) => {
+                    return {
+                        kind,
+                        name,
+                        numPostsLiked: -1
+                    };
+                });
+                self.setData({
+                    [`likeProgress[${stateIndex}]`]: state
+                });
+                doLikeStep(state.steps, stateIndex, 0, () => {
+                    self.setData({
+                        [`likeProgress[${stateIndex}].done`]: true
+                    });
+                    likeCommunity(i + 1, onSuccess);
+                });
             }
         }
 
@@ -161,15 +131,4 @@ Page({
             }
         }
     },
-    showCommunities() {
-        this.setData({
-            showCommunities: true
-        })
-    },
-    onCommunityChanged(event) {
-        const changes = util.computeCheckBoxChanges(event.detail.value, 'name', this.data.communities, 'checked');
-        for (let {index, checked} of changes) {
-            this.data.communities[index].checked = checked;
-        }
-    }
 })

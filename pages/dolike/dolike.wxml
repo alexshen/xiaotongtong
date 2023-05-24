@@ -1,19 +1,6 @@
 <!--pages/dolike/dolike.wxml-->
 <mp-toptips id="errortip" show="{{_showErrorTip}}" msg="{{_errorTipMsg}}"/>
-<mp-form-page wx:if="{{showCommunities}}" title="选择需要点赞的社区">
-    <mp-cells>
-        <mp-loading show="{{gettingCommunities}}" type="circle" />
-        <block wx:if="{{!gettingCommunities}}">
-            <mp-checkbox-group multi="{{true}}" bindchange="onCommunityChanged">
-                <mp-checkbox wx:for="{{communities}}" wx:key="value" label="{{item.name}}" value="{{item.name}}" checked="{{item.checked}}" />
-            </mp-checkbox-group>
-        </block>
-    </mp-cells>
-    <view slot="button">
-        <button wx:if="{{!gettingCommunities}}" class="weui-btn" type="primary" bindtap="doLike">点赞</button>
-    </view>
-</mp-form-page>
-<mp-form-page wx:if="{{!showCommunities}}" title="点赞中请稍后">
+<mp-form-page title="点赞中请稍候">
     <mp-cells>
         <view class="like-container" wx:for="{{likeProgress}}" wx:key="name">
             <view>
@@ -32,7 +19,4 @@
             </view>
         </view>
     </mp-cells>
-    <view slot="button">
-        <button wx:if="{{likingFinished}}" class="weui-btn" type="primary" bindtap="showCommunities">返回</button>
-    </view>
 </mp-form-page>

@@ -26,7 +26,7 @@ Page({
                 const ignoredStates = getCommunityData(true);
                 function getCommunityData(isIgnored) {
                     return res.names.filter(e => ignored.includes(e) === isIgnored).map(e => {
-                        return { name: e, value: e, checked: !isIgnored};
+                        return { name: e, checked: !isIgnored};
                     })
                 }
                 this.setData({

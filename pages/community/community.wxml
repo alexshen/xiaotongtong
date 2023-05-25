@@ -5,7 +5,7 @@
         <mp-loading show="{{gettingCommunities}}" type="circle" />
         <block wx:if="{{!gettingCommunities}}">
             <mp-checkbox-group multi="{{true}}" bindchange="onCommunityChanged">
-                <mp-checkbox wx:for="{{communities}}" wx:key="value" label="{{item.name}}" value="{{item.name}}" checked="{{item.checked}}" />
+                <mp-checkbox wx:for="{{communities}}" wx:key="name" label="{{item.name}}" value="{{item.name}}" checked="{{item.checked}}" />
             </mp-checkbox-group>
         </block>
     </mp-cells>

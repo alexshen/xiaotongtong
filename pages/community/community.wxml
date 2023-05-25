@@ -10,6 +10,6 @@
         </block>
     </mp-cells>
     <view slot="button">
-        <button wx:if="{{!gettingCommunities}}" class="weui-btn" type="primary" bindtap="doLike">点赞</button>
+        <button wx:if="{{!gettingCommunities}}" class="weui-btn" type="primary" disabled="{{numSelected === 0}}" bindtap="doLike">点赞</button>
     </view>
 </mp-form-page>

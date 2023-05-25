@@ -8,6 +8,7 @@ Page({
         gettingCommunities: false,
         // [{name, checked}]
         communities: [],
+        numSelected: 0
     },
     current: "",
     onLoad() {
@@ -21,7 +22,8 @@ Page({
             path: '/getcommunities',
             onSuccess: (res) => {
                 const ignored = wx.getStorageSync(KEY_IGNORED_COMMUNITIES) || [];
-                const communities = getCommunityData(false).concat(getCommunityData(true));
+                const selectedStates = getCommunityData(false);
+                const ignoredStates = getCommunityData(true);
                 function getCommunityData(isIgnored) {
                     return res.names.filter(e => ignored.includes(e) === isIgnored).map(e => {
                         return { name: e, value: e, checked: !isIgnored};
@@ -29,7 +31,8 @@ Page({
                 }
                 this.setData({
                     gettingCommunities: false,
-                    communities
+                    communities: selectedStates.concat(ignoredStates),
+                    numSelected: selectedStates.length
                 });
                 this.current = this.data.communities[res.current].name;
                 console.log("current community: " + this.current);
@@ -54,10 +57,11 @@ Page({
             this.data.communities[index].checked = checked;
         }
         const ignored = this.data.communities.filter(e => !e.checked);
-        const sorted = this.data.communities.filter(e => e.checked).concat(ignored);
+        const selectedStates = this.data.communities.filter(e => e.checked);
         wx.setStorageSync(KEY_IGNORED_COMMUNITIES, ignored.map(e => e.name));
         this.setData({
-            communities: sorted
+            communities: selectedStates.concat(ignored),
+            numSelected: selectedStates.length
         });
     }
 })
